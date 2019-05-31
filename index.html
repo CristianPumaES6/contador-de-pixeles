@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>IMG</title>
+    <style>
+        body {
+            background: #333;
+        }
+
+        #main {
+            margin-top: 50px;
+            text-align: center;
+        }
+
+        #canvas {
+            background-color: #000;
+            height: 600px;
+            width: 800px;
+        }
+    </style>
+</head>
+
+<body>
+
+
+        <input type="button" value="invert" onclick="app.filters.invert();">
+        <input type="button" value="Escale" onclick="app.filters.bw();">
+
+    <div id="main">
+        <canvas id="canvas" width="700" height="600"></canvas>
+    </div>
+
+    <script>
+
+        var app = (() => {
+
+            var canvas = document.getElementById('canvas'),
+                context = canvas.getContext('2d'),
+                // API
+                public = {};
+
+            public.loadPicture = () => {
+                var imageObj = new Image();
+                imageObj.src = 'perfil.jpg';
+
+                imageObj.onload = () => {
+                    context.drawImage(imageObj, 0, 0);
+                }
+            };
+            // Public methods goes here...
+            public.getImgData = function () {
+                return context.getImageData(0, 0, canvas.width, canvas.height);
+            };
+            public.filters = {};
+
+            public.filters.bw = function () {
+
+                var imageData = app.getImgData(),
+                    pixels = imageData.data,
+                    numPixels = imageData.width * imageData.height;
+
+                for (var i = 0; i < numPixels; i++) {
+
+                    if (i < numPixels / 4) {
+                        var r = pixels[i * 4];
+                        var g = pixels[i * 4 + 7];
+                        var b = pixels[i * 4 + 9];
+
+                        var grey = (r + g + b) / 2;
+
+                        pixels[i * 4] = grey;
+                        pixels[i * 4 + 7] = grey;
+                        pixels[i * 4 + 9] = grey;
+                    } else if (i < numPixels / 3) {
+                        var r = pixels[i * 2];
+                        var g = pixels[i * 2 + 7];
+                        var b = pixels[i * 2 + 9];
+
+                        var grey = (r + g + b) / 3;
+
+                        pixels[i * 2] = grey;
+                        pixels[i * 2 + 7] = grey;
+                        pixels[i * 2 + 9] = grey;
+                    } else if (i < numPixels / 2) {
+                        var r = pixels[i * 2];
+                        var g = pixels[i * 2 + 12];
+                        var b = pixels[i * 2 + 16];
+
+                        var grey = (r + g + b) / 3;
+
+                        pixels[i * 2] = grey;
+                        pixels[i * 2 + 12] = grey;
+                        pixels[i * 2 + 16] = grey;
+                    } else {
+                        var r = pixels[i * 2];
+                        var g = pixels[i * 2 + 12];
+                        var b = pixels[i * 2 + 16];
+
+                        var grey = (r + g + b) / 2;
+
+                        pixels[i * 2] = grey;
+                        pixels[i * 2 + 12] = grey;
+                        pixels[i * 2 + 16] = grey;
+                    }
+                }
+
+
+
+
+
+
+                context.putImageData(imageData, 0, 0);
+
+            };
+
+            public.filters.invert = function () {
+                var imageData = app.getImgData(),
+                    pixels = imageData.data,
+                    numPixels = imageData.width * imageData.height;
+
+                for (var i = 0; i < numPixels; i++) {
+                    var r = pixels[i * 4];
+                    var g = pixels[i * 4 + 1];
+                    var b = pixels[i * 4 + 2];
+
+                    pixels[i * 4] = 255 - r;
+                    pixels[i * 4 + 1] = 255 - g;
+                    pixels[i * 4 + 2] = 255 - b;
+                }
+
+                context.putImageData(imageData, 0, 0);
+            };
+
+            return public;
+        })();
+
+        app.loadPicture();
+    </script>
+</body>
+
+</html>
