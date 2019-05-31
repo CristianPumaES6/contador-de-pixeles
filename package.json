@@ -1,0 +1,19 @@
+{
+  "name": "contador-de-pixeles",
+  "version": "1.0.0",
+  "description": "algoritmo para contar pixeles de una imagen.",
+  "main": "count_pixal.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CristianPumaES6/contador-de-pixeles.git"
+  },
+  "author": "CristianPumaEs6",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CristianPumaES6/contador-de-pixeles/issues"
+  },
+  "homepage": "https://github.com/CristianPumaES6/contador-de-pixeles#readme"
+}
